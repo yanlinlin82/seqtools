@@ -6,7 +6,8 @@ VERSION := $(shell ./src/update_version.sh ./src/version.h)
 endif
 
 TARGET  := seqtools ${VERSION}
-MODULES := seqtools readqc
+MODULES := $(patsubst ./src/%.c,%,$(wildcard ./src/*.c))
+LIBS    := -lz
 
 all: ${TARGET}
 
@@ -14,7 +15,7 @@ clean:
 	@rm -vrf ${TARGET} tmp/ src/version.h
 
 seqtools: ${MODULES:%=tmp/%.o}
-	${CC} ${CFLAGS} -o $@ $^
+	${CC} ${CFLAGS} -o $@ $^ ${LIBS}
 
 tmp/%.o: src/%.c
 	${CC} ${CFLAGS} -c -o $@ $<

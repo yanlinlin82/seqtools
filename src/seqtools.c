@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include <string.h>
-#include "readqc.h"
 #include "version.h"
+#include "common.h"
+#include "readqc.h"
+
+int verbose = 0;
 
 struct command_item {
 	const char *cmd;
@@ -9,12 +12,12 @@ struct command_item {
 	const char *desc;
 };
 
-struct command_item commands[] = {
+static struct command_item commands[] = {
 	{ "readqc", readqc_main, "Check quality of sequencing reads" },
 	{ },
 };
 
-void print_usage(void)
+static void print_usage(void)
 {
 	struct command_item *p;
 
@@ -29,7 +32,7 @@ void print_usage(void)
 			"Commands:\n");
 
 	for (p = commands; p->cmd; ++p) {
-		fprintf(stderr, "   %s   %s\n", p->cmd, p->desc);
+		fprintf(stderr, "   %s    %s\n", p->cmd, p->desc);
 	}
 	fprintf(stderr, "\n");
 }
